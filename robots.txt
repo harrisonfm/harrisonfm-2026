@@ -1,0 +1,12 @@
+User-agent: *
+Crawl-Delay: 10
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins
+Disallow: /wp-json/
+Disallow: /wp-login.php
+Disallow: /search
+Disallow: /p
+Disallow: /feed
+Allow: /wp-admin/admin-ajax.php
+Sitemap: https://harrisonfm.com/sitemap.xml
