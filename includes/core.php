@@ -14,7 +14,11 @@ function setup() {
     add_rewrite_rule( '^/(.+)/?', 'index.php', 'top' );
   }
   add_action( 'init', $n('remove_redirects'));
-  register_nav_menu('header-menu', 'hfm');
+  register_nav_menus(array(
+    'header'  => 'Header',
+    'writing' => 'Writing',
+    'sitemap' => 'Sitemap',
+  ));
 
   // Load scripts
   function load_vue_scripts() {
@@ -36,8 +40,6 @@ function setup() {
 
   if (file_exists( get_stylesheet_directory() . '/dist/scripts/index.js' )) {
     add_action('wp_enqueue_scripts', $n('load_vue_scripts'), 100);
-  } else {
-    echo 'core JS scripts missing';
   }
 
   add_theme_support('post-thumbnails');

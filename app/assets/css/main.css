@@ -1,0 +1,84 @@
+@import './whirly-loader.css';
+
+/* ── Layout ───────────────────────────────────────────────────── */
+
+.post-container {
+  @apply px-2 lg:px-4 py-4 lg:py-8 mx-auto max-w-8xl;
+}
+
+/* ── Typography ───────────────────────────────────────────────── */
+
+.page-title {
+  @apply text-3xl font-bold mb-2 lg:mb-4 dark:text-gray-100;
+}
+
+.title-meta {
+  @apply text-sm text-gray-600 dark:text-gray-400 mb-4;
+}
+
+.text-link {
+  @apply text-blue-600 dark:text-blue-400 hover:underline;
+}
+
+.title-link {
+  @apply font-semibold underline hover:no-underline;
+}
+
+/* ── Post content (WP HTML) ───────────────────────────────────── */
+
+.post {
+  @apply dark:text-gray-100 leading-relaxed mx-auto max-w-4xl;
+}
+
+.post h2 { @apply text-2xl font-bold mt-8 mb-3; }
+.post h3 { @apply text-xl font-bold mt-6 mb-2; }
+.post p  { @apply mb-4; }
+.post a  { @apply text-blue-600 dark:text-blue-400 underline; }
+.post ul { @apply list-disc ml-6 mb-4; }
+.post ol { @apply list-decimal ml-6 mb-4; }
+.post blockquote { @apply border-l-4 border-gray-400 pl-4 italic my-4; }
+
+/* ── Article thumbnail card ───────────────────────────────────── */
+
+.overlay-article {
+  @apply relative overflow-hidden h-[200px] md:h-[250px] bg-gray-500 dark:bg-gray-700 cursor-pointer;
+}
+
+.overlay-article .overlay {
+  @apply absolute inset-0 bg-black opacity-30 transition-opacity duration-300;
+}
+
+.overlay-article:hover .overlay {
+  @apply opacity-50;
+}
+
+.overlay-article .title {
+  @apply absolute bottom-0 left-0 right-0 p-3 text-white font-bold text-lg z-10 leading-tight;
+}
+
+/* ── Button ───────────────────────────────────────────────────── */
+
+.button {
+  @apply inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold transition-colors duration-150;
+}
+
+/* ── Transitions ─────────────────────────────────────────────── */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-8px);
+  opacity: 0;
+}

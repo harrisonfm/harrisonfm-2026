@@ -11,7 +11,7 @@ export type WPMedia = any;
 
 export const useWpApi = () => {
   const config = useRuntimeConfig();
-  const base = (config.public?.wpBase as string) ?? '/wp-json/hfm/v1/';
+  const base = config.public.wpBase as string;
 
   // small helper to call endpoints (keeps signatures consistent)
   async function call<T = any>(path: string, opts?: { params?: WPParams; method?: string; body?: unknown; }): Promise<T> {
@@ -21,7 +21,7 @@ export const useWpApi = () => {
     if (opts?.body) fetchOpts.body = opts.body as any;
     // use $fetch on the server and client (Nuxt exposes it)
     // pass params as query string
-    return await $fetch<T>(url, { params: opts?.params, method: opts?.method as any, body: opts?.body as any });
+    return await $fetch<T>(url, { params: opts?.params, method: opts?.method as any, body: opts?.body as any }) as T;
   }
 
   // Endpoints — fully typed parameters to avoid TS7006
@@ -43,9 +43,9 @@ export const useWpApi = () => {
     return await call<WPPost>('post', { params: { slug } });
   }
 
-  async function getMenu(menu: string): Promise<WPMenu> {
-    if (!menu) throw new Error('getMenu: menu name required');
-    return await call<WPMenu>(`menus/${menu}`);
+  async function getMenu(location: string): Promise<WPMenu> {
+    if (!location) throw new Error('getMenu: location is required');
+    return await call<WPMenu>('menu', { params: { location } });
   }
 
   async function getStories(): Promise<WPStories> {
@@ -72,6 +72,15 @@ export const useWpApi = () => {
     return await call<{ images: WPMedia[] }>('harrigrams', { params });
   }
 
+  // Newsletter subscription — hits a separate Mailchimp plugin endpoint,
+  // not the hfm/v1 namespace.
+  async function subscribe(email: string): Promise<{ code: number }> {
+    return await $fetch<{ code: number }>('/wp-json/gmt-mailchimp/v1/subscribe', {
+      method: 'POST',
+      body: { email },
+    });
+  }
+
   return {
     getHome,
     getPage,
@@ -83,6 +92,7 @@ export const useWpApi = () => {
     getStoryMedia,
     like,
     getHarrigrams,
+    subscribe,
   };
 };
 

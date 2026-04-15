@@ -7,6 +7,16 @@ function setup() {
     return __NAMESPACE__ . "\\$function";
   };
 
+  // Allow localhost dev servers to call the REST API from the browser.
+  add_action('rest_api_init', function() {
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ( preg_match('/^https?:\/\/localhost(:\d+)?$/', $origin) ) {
+      header('Access-Control-Allow-Origin: ' . $origin);
+      header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+      header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    }
+  }, 15);
+
   add_action('rest_api_init', $n('register_rest_routes'));
   add_filter('wp_rest_cache/allowed_endpoints', $n('wprc_add_hfm_endpoints'), 10, 1);
 
@@ -38,11 +48,11 @@ function setup() {
     if (!isset($allowed_endpoints['hfm/v1']) || !in_array('storymedia', $allowed_endpoints['hfm/v1'])) {
       $allowed_endpoints['hfm/v1'][] = 'storymedia';
     }
-    if (!isset($allowed_endpoints['menus/v1']) || !in_array('menus', $allowed_endpoints['menus/v1'])) {
-      $allowed_endpoints['menus/v1'][] = 'menus';
-    }
     if (!isset($allowed_endpoints['hfm/v1']) || !in_array('harrigrams', $allowed_endpoints['hfm/v1'])) {
       $allowed_endpoints['hfm/v1'][] = 'harrigrams';
+    }
+    if (!isset($allowed_endpoints['hfm/v1']) || !in_array('menu', $allowed_endpoints['hfm/v1'])) {
+      $allowed_endpoints['hfm/v1'][] = 'menu';
     }
     return $allowed_endpoints;
   }
@@ -505,6 +515,33 @@ function setup() {
     return new \WP_REST_Response($response);
   }
 
+  function getNavMenu($request) {
+    $location = $request->get_param('location');
+    $locations = get_nav_menu_locations();
+
+    if ( empty($locations[$location]) ) {
+      return new \WP_REST_Response(array('items' => array()), 200);
+    }
+
+    $items = wp_get_nav_menu_items($locations[$location]);
+    if ( !$items ) {
+      return new \WP_REST_Response(array('items' => array()), 200);
+    }
+
+    $formatted = array_map(function($item) {
+      return array(
+        'id'        => $item->ID,
+        'title'     => $item->title,
+        'url'       => str_replace(network_site_url(), '', $item->url),
+        'parent'    => $item->menu_item_parent,
+        'order'     => $item->menu_order,
+        'target'    => $item->target,
+      );
+    }, $items);
+
+    return new \WP_REST_Response(array('items' => array_values($formatted)));
+  }
+
   function register_rest_routes() {
     global $n;
     register_rest_route('hfm/v1', '/media/(?P<id>\d+)/like', array(
@@ -570,6 +607,12 @@ function setup() {
     register_rest_route('hfm/v1', '/harrigrams', array(
       'methods' => 'GET',
       'callback' => $n('getHarrigrams'),
+      'permission_callback' => '__return_true'
+    ));
+
+    register_rest_route('hfm/v1', '/menu', array(
+      'methods' => 'GET',
+      'callback' => $n('getNavMenu'),
       'permission_callback' => '__return_true'
     ));
   }
