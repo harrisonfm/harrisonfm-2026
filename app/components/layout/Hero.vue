@@ -3,14 +3,12 @@
     <!-- Responsive background image via NuxtPicture positioned behind content.
          This replaces the dynamic <style> injection used in the 2020 theme with
          a proper <picture> element — better for performance and SSR. -->
-    <NuxtPicture
+    <img
       v-if="hasImage"
       :src="img.images.full?.src ?? img.images.large?.src"
-      :imgAttrs="{ class: 'hero-image', alt: '' }"
-      :modifiers="{ fit: 'cover' }"
-      format="webp,jpeg"
+      class="hero-image"
+      alt=""
       loading="eager"
-      sizes="sm:100vw lg:100vw"
       aria-hidden="true"
     />
 
@@ -39,7 +37,7 @@ const props = defineProps<{
   title?: string | boolean
 }>()
 
-const hasImage = computed(() => !!props.img?.images)
+const hasImage = computed(() => !!(props.img && props.img.images))
 </script>
 
 <style scoped>

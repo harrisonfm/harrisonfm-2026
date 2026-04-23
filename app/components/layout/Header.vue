@@ -1,5 +1,5 @@
 <template>
-  <header class="main-nav">
+  <header class="main-nav" ref="headerEl">
     <HeaderLogo />
     <HeaderMenu :menu="menus['header'] ?? null" @toggle-search="toggleSearch" :showSearch="showSearch" />
     <Transition name="slide-down">
@@ -16,6 +16,11 @@ const menusStore = useMenusStore()
 const { menus } = storeToRefs(menusStore)
 
 const showSearch = ref(false)
+const headerEl = ref<HTMLElement | null>(null)
+
+// Close when clicking outside the entire header (icon button is inside, so
+// clicking it never fires this — the toggle handles open/close cleanly).
+useClickOutside(headerEl, () => { showSearch.value = false })
 
 function toggleSearch(value?: boolean) {
   showSearch.value = typeof value === 'boolean' ? value : !showSearch.value

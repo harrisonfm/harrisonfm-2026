@@ -152,10 +152,11 @@ function setup() {
 
   function getHome() {
     $data = get_object_vars(get_theme_mod('header_image_data'));
+    $hero = !empty($data['attachment_id'])
+            ? getAttachment($data['attachment_id'])
+            : false;
 
-    return new \WP_REST_Response(array(
-      'hero' => getAttachment($data['attachment_id'])
-    ));
+    return new \WP_REST_Response( array( 'hero' => $hero ) );
   }
 
   function formatPostsForApi(&$posts) {
@@ -528,18 +529,41 @@ function setup() {
       return new \WP_REST_Response(array('items' => array()), 200);
     }
 
-    $formatted = array_map(function($item) {
-      return array(
-        'id'        => $item->ID,
-        'title'     => $item->title,
-        'url'       => str_replace(network_site_url(), '', $item->url),
-        'parent'    => $item->menu_item_parent,
-        'order'     => $item->menu_order,
-        'target'    => $item->target,
+    // Build a map keyed by ID so we can attach children to parents.
+    $map = array();
+    foreach ( $items as $item ) {
+      $map[$item->ID] = array(
+        'ID'          => $item->ID,
+        'title'       => $item->title,
+        'url'         => str_replace(network_site_url(), '', $item->url),
+        'parent'      => (int) $item->menu_item_parent,
+        'order'       => $item->menu_order,
+        'target'      => $item->target,
+        'child_items' => array(),
       );
-    }, $items);
+    }
 
-    return new \WP_REST_Response(array('items' => array_values($formatted)));
+    // Attach each child to its parent's child_items array.
+    $roots = array();
+    foreach ( $map as $id => &$node ) {
+      if ( $node['parent'] && isset($map[$node['parent']]) ) {
+        $map[$node['parent']]['child_items'][] = &$node;
+      } else {
+        $roots[] = &$node;
+      }
+    }
+    unset($node);
+
+    // Drop empty child_items arrays so the frontend v-if check works correctly
+    // (an empty [] is truthy in JS, which would incorrectly trigger the dropdown branch).
+    foreach ( $map as &$node ) {
+      if ( empty($node['child_items']) ) {
+        unset($node['child_items']);
+      }
+    }
+    unset($node);
+
+    return new \WP_REST_Response(array('items' => array_values($roots)));
   }
 
   function register_rest_routes() {

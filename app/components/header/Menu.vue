@@ -10,7 +10,6 @@
           class="header-menu-item"
         />
         <li class="header-menu-search">
-          <!-- Search toggle: icon on desktop, inline form on mobile -->
           <button
             class="hidden sm:flex fa-icon"
             :class="{ 'text-blue-500': showSearch }"
@@ -22,7 +21,8 @@
               <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
             </svg>
           </button>
-          <HeaderSearchForm class="sm:hidden" @toggle-search="emit('toggle-search')" />
+          <!-- Mobile: inline form in the dropdown menu -->
+          <HeaderSearchForm v-if="isMobile" @toggle-search="emit('toggle-search')" />
         </li>
       </ul>
     </Transition>
@@ -73,7 +73,7 @@ const themeStore = useThemeStore()
 const route = useRoute()
 
 const showMobileMenu = ref(false)
-const isMobile = ref(true)
+const isMobile = ref(false)
 
 function toggleMobileMenu() {
   showMobileMenu.value = !showMobileMenu.value
@@ -111,7 +111,7 @@ onBeforeUnmount(() => {
   @apply flex flex-col items-end absolute top-full right-0 border-l-2 border-b-2 border-gray-600 z-neg bg-white bg-opacity-95 dark:bg-gray-900 sm:bg-transparent dark:sm:bg-transparent sm:flex-row sm:static sm:border-0 sm:z-0 sm:items-center;
 }
 .header-menu-item {
-  @apply relative w-full justify-end flex-wrap sm:justify-center sm:items-center sm:border-solid sm:border-r-16 sm:border-transparent sm:h-16 sm:flex-nowrap;
+  @apply relative w-full justify-end flex-wrap sm:w-auto sm:justify-center sm:items-center sm:border-solid sm:border-r-16 sm:border-transparent sm:h-16 sm:flex-nowrap;
 }
 .header-menu-search {
   @apply flex items-center sm:h-16;

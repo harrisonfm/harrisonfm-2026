@@ -1,5 +1,5 @@
 <template>
-  <div class="search-form" ref="el" @keyup.enter="search" @keyup.esc="emit('toggle-search')">
+  <div class="search-form" @keyup.enter="search" @keyup.esc="emit('toggle-search')">
     <input
       ref="input"
       type="text"
@@ -22,10 +22,7 @@ import { ref, onMounted } from 'vue'
 const emit = defineEmits<{ (e: 'toggle-search'): void }>()
 
 const searchInput = ref('')
-const el = ref<HTMLElement | null>(null)
 const input = ref<HTMLInputElement | null>(null)
-
-useClickOutside(el, () => emit('toggle-search'))
 
 function search() {
   if (searchInput.value) {

@@ -2,9 +2,11 @@
   <div id="app">
     <NuxtRouteAnnouncer />
     <LayoutHeader />
-    <main>
-      <NuxtPage />
-    </main>
+    <div class="site-content">
+      <main>
+        <NuxtPage />
+      </main>
+    </div>
     <LayoutFooter />
   </div>
 </template>
