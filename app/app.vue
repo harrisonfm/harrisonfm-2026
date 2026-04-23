@@ -1,10 +1,11 @@
 <template>
   <div id="app">
+    <NuxtLoadingIndicator color="#2563eb" :height="3" />
     <NuxtRouteAnnouncer />
     <LayoutHeader />
     <div class="site-content">
       <main>
-        <NuxtPage />
+        <NuxtPage :transition="{ name: 'fade', mode: 'out-in' }" />
       </main>
     </div>
     <LayoutFooter />

@@ -11,7 +11,7 @@
         class="overlay-article jiggle-on-hover"
       >
         <NuxtLink :to="`/photos/${item.slug}`">
-          <NuxtImg
+          <img
             v-if="item.featured?.images?.medium_large"
             :src="item.featured.images.medium_large.src"
             :alt="item.title"

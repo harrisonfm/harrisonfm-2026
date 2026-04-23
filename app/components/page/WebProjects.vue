@@ -5,18 +5,10 @@
       :key="project.title"
       class="project"
       :class="{ on: openIndex === idx }"
+      :style="project.image?.images?.medium_large ? { backgroundImage: `url('${project.image.images.medium_large.src}')` } : {}"
       @click="toggle(idx)"
     >
       <div class="title">{{ project.title }}</div>
-
-      <!-- Responsive background image — replaces the <v-style> injection -->
-      <NuxtImg
-        v-if="project.image?.images?.medium_large"
-        :src="project.image.images.medium_large.src"
-        :alt="project.title"
-        class="absolute inset-0 w-full h-full object-cover object-center -z-10"
-        loading="lazy"
-      />
 
       <div class="project-description">
         <p class="p-2 lg:p-4">
@@ -58,8 +50,13 @@ function toggle(idx: number) {
   @apply border-b-2 h-[44px] sm:border-b-4 sm:h-[74px];
 }
 .project.on {
-  height: calc(100vw / 2);
-  max-height: 500px;
+  height: 100dvh;
+}
+@screen sm {
+  .project.on {
+    height: calc(100vw / 2);
+    max-height: 500px;
+  }
 }
 .project .title {
   @apply bg-white dark:bg-gray-800 dark:text-gray-100 font-bold inline-flex items-center px-4 self-start relative border-black dark:border-gray-700 border-b-2 border-r-2 sm:border-r-0 sm:border-b-4 sm:text-3xl text-black ml-0 mt-0 dark:font-normal leading-[40px] sm:leading-[66px];

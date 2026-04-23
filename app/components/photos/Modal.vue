@@ -11,6 +11,8 @@
       @keyup.esc="back"
       @keyup.space.prevent="photoStore.toggleSlideshow()"
       @keyup.enter="photoStore.toggleInfo()"
+      @touchstart.passive="onTouchStart"
+      @touchend.passive="onTouchEnd"
     >
       <template v-if="photo">
         <!-- ── Controls panel (full) ────────────────────────── -->
@@ -313,6 +315,20 @@ function share() {
     shareCopied.value = true
     setTimeout(() => { shareCopied.value = false }, 1500)
   }
+}
+
+// ── Swipe ─────────────────────────────────────────────────────────
+let touchStartX = 0
+
+function onTouchStart(e: TouchEvent) {
+  touchStartX = e.touches[0]!.clientX
+}
+
+function onTouchEnd(e: TouchEvent) {
+  const dx = e.changedTouches[0]!.clientX - touchStartX
+  if (Math.abs(dx) < 50) return
+  if (dx < 0) goToNext()
+  else goToPrev()
 }
 
 // ── Resize handler ────────────────────────────────────────────────

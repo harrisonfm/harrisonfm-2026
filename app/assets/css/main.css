@@ -26,7 +26,7 @@ h3 {
 
 /* Hero/content overlap card effect at xxl — hero bleeds behind the card */
 .hero + .post-container {
-  @apply xxl:rounded xxl:-my-16;
+  @apply xxl:rounded xxl:-mt-16 xxl:pb-20;
 }
 
 /* ── Typography ───────────────────────────────────────────────── */

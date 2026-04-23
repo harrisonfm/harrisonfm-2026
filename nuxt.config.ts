@@ -10,6 +10,23 @@ export default defineNuxtConfig({
       wpBase: process.env.WP_BASE_URL ?? 'https://hfm-2025.lndo.site/wp-json/hfm/v1/',
     },
   },
+  routeRules: {
+    // Homepage refreshes frequently (new posts)
+    '/': { swr: 60 },
+    // Paginated archive pages
+    '/page/**': { swr: 60 },
+    // Individual posts and photo modals — content rarely changes
+    '/:year/:slug/**': { swr: 3600 },
+    // Photos, stories, categories, tags — moderate churn
+    '/photos/**': { swr: 600 },
+    '/stories/**': { swr: 600 },
+    '/category/**': { swr: 300 },
+    '/tag/**': { swr: 300 },
+    '/harrigrams/**': { swr: 300 },
+    // Static-ish pages
+    '/search/**': { swr: 60 },
+    '/:slug': { swr: 3600 },
+  },
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',

@@ -21,6 +21,7 @@
         title="Recent Harrigrams"
         basePath="/harrigrams"
         :isHarrigrams="true"
+        :cols="8"
         :limit="8"
         key="harrigrams"
       />
