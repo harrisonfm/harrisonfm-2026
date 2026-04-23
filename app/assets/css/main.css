@@ -64,7 +64,7 @@ h3 {
 /* ── Article thumbnail card ───────────────────────────────────── */
 
 .overlay-article {
-  @apply relative overflow-hidden h-[200px] md:h-[250px] bg-gray-500 dark:bg-gray-700 cursor-pointer;
+  @apply relative overflow-hidden aspect-video min-h-[300px] bg-gray-500 dark:bg-gray-700 cursor-pointer flex items-center justify-center;
 }
 
 .overlay-article .overlay {
@@ -76,7 +76,7 @@ h3 {
 }
 
 .overlay-article .title {
-  @apply absolute bottom-0 left-0 right-0 p-3 text-white font-bold text-lg z-10 leading-tight;
+  @apply p-3 text-white font-bold text-2xl z-10 text-center relative;
 }
 
 /* ── Button ───────────────────────────────────────────────────── */

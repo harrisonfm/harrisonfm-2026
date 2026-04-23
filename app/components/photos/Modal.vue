@@ -18,12 +18,9 @@
           <div class="controls controls-full" v-if="photoStore.galleryInfo">
             <!-- Back -->
             <button class="controls-icon" @click="back" type="button" aria-label="Back to gallery">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5" fill="currentColor">
-                <path d="M200 32H56C42.7 32 32 42.7 32 56v144c0 13.3 10.7 24 24 24s24-10.7 24-24V96.5l68.7 68.7c-22.9 22.9-37.3 54.5-37.3 89.5c0 70.7 57.3 128 128 128s128-57.3 128-128s-57.3-128-128-128c-35 0-66.6 14.4-89.5 37.3L80.5 96H200c13.3 0 24-10.7 24-24s-10.7-24-24-24z"/>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="w-5 h-5" fill="currentColor">
+                <path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/>
               </svg>
-              <Transition name="fade">
-                <div class="controls-msg" v-if="hover.back">Back to gallery</div>
-              </Transition>
             </button>
 
             <!-- Toggle info -->
@@ -105,12 +102,12 @@
           <div
             class="photo-box"
             :class="photoStore.galleryInfo ? 'pb-2 lg:pb-4' : 'my-auto'"
-            v-if="loaded"
+            v-show="loaded"
           >
             <img
               :srcset="buildSrcset(photo)"
               :sizes="imgSizes"
-              :src="photo.images?.['2048x2048']?.src ?? photo.images?.large?.src"
+              :src="photo.images?.['2048x2048']?.src ?? photo.images?.large?.src ?? photo.images?.full?.src"
               :alt="photo.post_title"
               class="max-h-full m-auto"
               @load="onMainLoad"
@@ -123,9 +120,9 @@
           class="w-full text-center px-2 my-2 dark:text-gray-100 lg:px-4 lg:my-4 sm:hidden"
           :class="{ hidden: !photoStore.galleryInfo }"
         >
-          <h2 class="leading-none text-2xl mb-0">{{ loaded ? photo.post_title : 'Loading...' }}</h2>
+          <h2 class="leading-none text-2xl mb-0">{{ photo.images ? photo.post_title : 'Loading...' }}</h2>
           <Transition name="fade">
-            <p class="mb-0 mt-2 leading-5" v-if="loaded && (photo.post_excerpt || locDate)">
+            <p class="mb-0 mt-2 leading-5" v-if="photo.images && (photo.post_excerpt || locDate)">
               <span>{{ photo.post_excerpt }}</span>
               <span class="block" v-if="locDate">{{ photo.post_excerpt ? '—' : '' }} {{ locDate }}</span>
             </p>
@@ -154,9 +151,9 @@
 
             <!-- Caption -->
             <div class="infonav-text">
-              <h2 class="infonav-title mb-0">{{ loaded ? photo.post_title : 'Loading...' }}</h2>
+              <h2 class="infonav-title mb-0">{{ photo.images ? photo.post_title : 'Loading...' }}</h2>
               <Transition name="fade">
-                <p class="mb-0 mt-2 lg:mt-4" v-if="loaded && (photo.post_excerpt || locDate)">
+                <p class="mb-0 mt-2 lg:mt-4" v-if="photo.images && (photo.post_excerpt || locDate)">
                   <span>{{ photo.post_excerpt }}</span>
                   <span class="infonav-locdate" v-if="locDate">{{ photo.post_excerpt ? '—' : '' }} {{ locDate }}</span>
                 </p>
@@ -244,6 +241,7 @@ function computeSizes(p: Record<string, any>): string {
 }
 
 function initPhoto(idSlug: string) {
+  if (!postsStore.gallery.loaded) return  // watch on gallery.loaded will re-init once ready
   const id = parseId(idSlug)
   const gallery = postsStore.gallery.images
   const idx = gallery.findIndex((p: any) => p.ID === id)

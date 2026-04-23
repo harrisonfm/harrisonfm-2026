@@ -5,7 +5,7 @@
       <span v-else>{{ title }}</span>
     </h4>
     <NuxtLink
-      v-for="photo in gallery.images"
+      v-for="photo in displayImages"
       :key="photo.ID"
       :to="`${basePath}/${photo.ID}-${photo.post_name}`"
       class="gallery-link"
@@ -29,7 +29,12 @@ const props = defineProps<{
   title?: string
   basePath: string        // e.g. '/harrigrams' or '/2024/my-post'
   isHarrigrams?: boolean
+  limit?: number
 }>()
+
+const displayImages = computed(() =>
+  props.limit ? props.gallery.images.slice(0, props.limit) : props.gallery.images
+)
 </script>
 
 <style scoped>

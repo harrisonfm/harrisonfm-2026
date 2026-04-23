@@ -47,7 +47,8 @@ export const usePostsStore = defineStore('posts', {
 
     // Check in-memory posts list before hitting the API — avoids a round-trip
     // when the user navigates to a post they already saw in the listing.
-    async fetchPost(slug: string) {
+    // Returns the post so useAsyncData can serialize it in the SSR payload.
+    async fetchPost(slug: string): Promise<WPPost | null> {
       const cached = this.posts.find(p => p.post_name === slug)
       if (cached) {
         this.single = cached
@@ -56,7 +57,7 @@ export const usePostsStore = defineStore('posts', {
         } else {
           this.gallery = defaultGallery
         }
-        return
+        return cached
       }
 
       this.loading = true
@@ -70,9 +71,11 @@ export const usePostsStore = defineStore('posts', {
         } else {
           this.gallery = defaultGallery
         }
+        return post
       } catch (e) {
         this.error = e instanceof Error ? e.message : String(e)
         this.pageError = true
+        return null
       } finally {
         this.loading = false
       }

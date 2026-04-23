@@ -4,6 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: { port: 3000 },
   runtimeConfig: {
+    // Server-only: use HTTP to avoid SSL cert issues with Lando's self-signed CA
+    wpBaseServer: process.env.WP_BASE_URL_SERVER ?? 'http://hfm-2025.lndo.site/wp-json/hfm/v1/',
     public: {
       wpBase: process.env.WP_BASE_URL ?? 'https://hfm-2025.lndo.site/wp-json/hfm/v1/',
     },

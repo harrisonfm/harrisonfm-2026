@@ -5,10 +5,9 @@ const idSlug = route.params.idSlug as string
 
 const postsStore = usePostsStore()
 
-// Load the parent post if gallery isn't available (direct navigation / SSR)
-if (!postsStore.gallery.loaded) {
-  await useAsyncData(`post-${postSlug}`, () => postsStore.fetchPost(postSlug))
-}
+// Always fetch the parent post — the gallery must belong to this post specifically.
+// Skipping on gallery.loaded is unsafe: the loaded gallery may be from a different post.
+await useAsyncData(`post-${postSlug}`, () => postsStore.fetchPost(postSlug))
 
 const photo = computed(() => {
   const id = parseInt(idSlug.split('-')[0]!)

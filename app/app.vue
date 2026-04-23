@@ -21,7 +21,6 @@ onMounted(() => {
 if (import.meta.dev) {
   onErrorCaptured((err, instance, info) => {
     console.error('[vue]', info, err)
-    return false
   })
 
   useNuxtApp().hook('vue:error', (err, instance, info) => {

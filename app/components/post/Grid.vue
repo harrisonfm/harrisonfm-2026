@@ -21,6 +21,7 @@
         title="Recent Harrigrams"
         basePath="/harrigrams"
         :isHarrigrams="true"
+        :limit="8"
         key="harrigrams"
       />
     </TransitionGroup>

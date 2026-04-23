@@ -40,7 +40,7 @@ onMounted(() => {
   @apply bg-black text-gray-100 flex items-center justify-between flex-wrap px-6 py-4;
 }
 .footer-content {
-  @apply max-w-8xl mx-auto flex flex-wrap lg:justify-center;
+  @apply w-full max-w-8xl mx-auto flex flex-wrap lg:justify-center;
 }
 .text-link {
   @apply hover:text-blue-500 focus:text-blue-500 text-gray-100 transition-colors duration-200 no-underline bg-transparent border-0;

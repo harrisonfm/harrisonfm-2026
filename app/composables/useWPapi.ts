@@ -11,7 +11,10 @@ export type WPMedia = any;
 
 export const useWpApi = () => {
   const config = useRuntimeConfig();
-  const base = config.public.wpBase as string;
+  // On the server, use the private HTTP URL to avoid Lando SSL cert issues.
+  // Node.js doesn't trust Lando's CA, so HTTPS requests fail silently.
+  const base = (import.meta.server ? (config.wpBaseServer as string) : null)
+    ?? (config.public.wpBase as string);
 
   // small helper to call endpoints (keeps signatures consistent)
   async function call<T = any>(path: string, opts?: { params?: WPParams; method?: string; body?: unknown; }): Promise<T> {

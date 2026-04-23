@@ -3,9 +3,8 @@ const route = useRoute()
 const postSlug = route.params.postSlug as string
 
 const postsStore = usePostsStore()
-await useAsyncData(`post-${postSlug}`, () => postsStore.fetchPost(postSlug))
+const { data: post } = await useAsyncData(`post-${postSlug}`, () => postsStore.fetchPost(postSlug))
 
-const post = computed(() => postsStore.single)
 const gallery = computed(() => postsStore.gallery)
 const loaded = computed(() => !!post.value?.post_content)
 
