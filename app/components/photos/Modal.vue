@@ -291,10 +291,16 @@ function onMainLoad() {
 // ── Slideshow ─────────────────────────────────────────────────────
 let slideshowTimer: ReturnType<typeof setTimeout> | null = null
 
+function advanceSlideshow() {
+  if (!photoStore.nextPhoto?.ID) return
+  const next = photoStore.nextPhoto
+  navigateTo(`${props.backPath}/${next.ID}-${next.post_name}`, { replace: true })
+}
+
 function handleSlideshow() {
   clearSlideshow()
   if (photoStore.slideshow && photoStore.nextPhoto?.images) {
-    slideshowTimer = setTimeout(goToNext, 5000)
+    slideshowTimer = setTimeout(advanceSlideshow, 5000)
   }
 }
 
