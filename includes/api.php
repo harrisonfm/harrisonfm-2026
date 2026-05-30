@@ -151,7 +151,8 @@ function setup() {
   }
 
   function getHome() {
-    $data = get_object_vars(get_theme_mod('header_image_data'));
+    $mod = get_theme_mod('header_image_data');
+    $data = is_object($mod) ? get_object_vars($mod) : (array) $mod;
     $hero = !empty($data['attachment_id'])
             ? getAttachment($data['attachment_id'])
             : false;

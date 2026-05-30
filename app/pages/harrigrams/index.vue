@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({ title: 'Harrigrams — HarrisonFM' })
+useSeoMeta({ title: 'Harrigrams' })
 
 const postsStore = usePostsStore()
 

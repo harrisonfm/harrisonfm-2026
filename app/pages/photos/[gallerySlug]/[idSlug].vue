@@ -25,7 +25,9 @@ const photo = computed(() => {
 })
 
 useSeoMeta({
-  title: computed(() => `${photo.value?.post_title ?? 'Photo'} — ${postsStore.gallery.title ?? gallerySlug} — HarrisonFM`),
+  title: computed(() => `${photo.value?.post_title ?? 'Photo'} — ${postsStore.gallery.title ?? gallerySlug}`),
+  description: computed(() => photo.value?.post_excerpt ?? postsStore.gallery.description ?? ''),
+  ogImage: computed(() => photo.value?.images?.large?.src ?? photo.value?.images?.full?.src),
 })
 </script>
 

@@ -13,8 +13,9 @@ if (!post.value) {
 }
 
 useSeoMeta({
-  title: `${post.value?.post_title ?? ''} — HarrisonFM`,
+  title: `${post.value?.post_title ?? ''}`,
   description: post.value?.post_excerpt ?? '',
+  ogImage: post.value?.featured?.images?.large?.src ?? post.value?.featured?.images?.full?.src,
 })
 </script>
 

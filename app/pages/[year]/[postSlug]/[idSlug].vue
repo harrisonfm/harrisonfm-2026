@@ -17,7 +17,9 @@ const photo = computed(() => {
 const backPath = `/${route.params.year}/${postSlug}`
 
 useSeoMeta({
-  title: computed(() => `${photo.value?.post_title ?? 'Photo'} — ${postsStore.single?.post_title ?? ''} — HarrisonFM`),
+  title: computed(() => `${photo.value?.post_title ?? 'Photo'} — ${postsStore.single?.post_title ?? ''}`),
+  description: computed(() => photo.value?.post_excerpt ?? postsStore.single?.post_excerpt ?? ''),
+  ogImage: computed(() => photo.value?.images?.large?.src ?? photo.value?.images?.full?.src),
 })
 </script>
 

@@ -23,5 +23,5 @@ import type { NuxtError } from '#app'
 
 const props = defineProps<{ error: NuxtError }>()
 
-useSeoMeta({ title: 'Not Found — HarrisonFM' })
+useSeoMeta({ title: 'Not Found' })
 </script>

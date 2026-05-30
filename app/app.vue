@@ -15,6 +15,19 @@
 <script setup lang="ts">
 const themeStore = useThemeStore()
 
+const { data: siteInfo } = await useAsyncData('site-info', () => $fetch('/api/site-info'))
+useSeoMeta({
+  titleTemplate: (title) => title ? `${title} | ${siteInfo.value?.name}` : (siteInfo.value?.name ?? ''),
+  ogSiteName: () => siteInfo.value?.name,
+  description: () => siteInfo.value?.description,
+})
+useHead({
+  link: computed(() => siteInfo.value?.iconUrl
+    ? [{ rel: 'icon', href: siteInfo.value.iconUrl }]
+    : []
+  ),
+})
+
 onMounted(() => {
   themeStore.initTheme()
 })

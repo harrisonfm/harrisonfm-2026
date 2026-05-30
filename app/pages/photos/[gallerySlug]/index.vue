@@ -37,8 +37,9 @@ if (!gallery.value.loaded && !gallery.value.images.length) {
 }
 
 useSeoMeta({
-  title: computed(() => `${gallery.value.title ?? gallerySlug} — Photos — HarrisonFM`),
+  title: computed(() => `${gallery.value.title ?? gallerySlug} — Photos`),
   description: computed(() => gallery.value.description ?? ''),
+  ogImage: computed(() => gallery.value.featured?.images?.large?.src ?? gallery.value.images?.[0]?.images?.large?.src),
 })
 </script>
 

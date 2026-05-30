@@ -12,8 +12,9 @@ if (!currentStory.value.loaded && storiesStore.error) {
 }
 
 useSeoMeta({
-  title: computed(() => `${currentStory.value.term.title || storySlug} — Stories — HarrisonFM`),
+  title: computed(() => `${currentStory.value.term.title || storySlug} — Stories`),
   description: computed(() => currentStory.value.term.description ?? ''),
+  ogImage: computed(() => currentStory.value.term.featured?.images?.large?.src ?? currentStory.value.term.featured?.images?.full?.src),
 })
 </script>
 

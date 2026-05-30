@@ -1,5 +1,5 @@
 <script setup lang="ts">
-useSeoMeta({ title: 'Photos — HarrisonFM' })
+useSeoMeta({ title: 'Photos' })
 
 const postsStore = usePostsStore()
 await useAsyncData('photos-page', () => postsStore.fetchPage('photos'))

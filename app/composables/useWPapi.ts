@@ -11,10 +11,9 @@ export type WPMedia = any;
 
 export const useWpApi = () => {
   const config = useRuntimeConfig();
-  // On the server, use the private HTTP URL to avoid Lando SSL cert issues.
-  // Node.js doesn't trust Lando's CA, so HTTPS requests fail silently.
-  const base = (import.meta.server ? (config.wpBaseServer as string) : null)
-    ?? (config.public.wpBase as string);
+  const base = import.meta.server
+    ? `${config.wpCmsUrl as string}/wp-json/hfm/v1/`
+    : (config.public.wpBase as string);
 
   // small helper to call endpoints (keeps signatures consistent)
   async function call<T = any>(path: string, opts?: { params?: WPParams; method?: string; body?: unknown; }): Promise<T> {
@@ -48,7 +47,10 @@ export const useWpApi = () => {
 
   async function getMenu(location: string): Promise<WPMenu> {
     if (!location) throw new Error('getMenu: location is required');
-    return await call<WPMenu>('menu', { params: { location } });
+    const menusBase = import.meta.server
+      ? `${config.wpCmsUrl as string}/wp-json/menus/v1/menus`
+      : '/api/wp/menus/v1/menus';
+    return await $fetch<WPMenu>(`${menusBase}/${location}`);
   }
 
   async function getStories(): Promise<WPStories> {

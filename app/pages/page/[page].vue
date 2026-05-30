@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const page = parseInt(route.params.page as string)
-useSeoMeta({ title: `Page ${page} — HarrisonFM` })
+useSeoMeta({ title: `Page ${page}` })
 
 const postsStore = usePostsStore()
 const api = useWpApi()

@@ -42,8 +42,9 @@ if (pageSlug === 'harrigrams') {
 }
 
 useSeoMeta({
-  title: `${page.value?.post_title ?? pageSlug} — HarrisonFM`,
+  title: `${page.value?.post_title ?? pageSlug}`,
   description: page.value?.post_excerpt ?? '',
+  ogImage: page.value?.featured?.images?.large?.src ?? page.value?.featured?.images?.full?.src,
 })
 </script>
 

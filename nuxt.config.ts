@@ -4,9 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   devServer: { port: 3000 },
   runtimeConfig: {
-    // Server-only: direct call to CMS, bypasses proxy
-    wpBaseServer: process.env.WP_BASE_URL_SERVER ?? 'http://hfm-2025.lndo.site/wp-json/hfm/v1/',
-    // CMS root URL used by the /api/wp/* proxy route
+    // CMS root URL — used server-side for direct API calls and by the /api/wp/* proxy
     wpCmsUrl: process.env.WP_CMS_URL ?? 'http://hfm-2025.lndo.site',
     public: {
       // Client-side calls go through the local proxy — no CORS needed
