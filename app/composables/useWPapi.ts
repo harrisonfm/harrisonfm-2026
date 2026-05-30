@@ -78,7 +78,7 @@ export const useWpApi = () => {
   // Newsletter subscription — hits a separate Mailchimp plugin endpoint,
   // not the hfm/v1 namespace.
   async function subscribe(email: string): Promise<{ code: number }> {
-    return await $fetch<{ code: number }>('/wp-json/gmt-mailchimp/v1/subscribe', {
+    return await $fetch<{ code: number }>('/api/wp/gmt-mailchimp/v1/subscribe', {
       method: 'POST',
       body: { email },
     });
