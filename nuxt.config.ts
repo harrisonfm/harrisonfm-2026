@@ -33,5 +33,6 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@nuxtjs/seo',
   ],
+  ogImage: { enabled: false },
   css: ['~/assets/css/main.css'],
 })
