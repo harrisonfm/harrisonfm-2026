@@ -29,10 +29,6 @@ function scrollToTop() {
   document.getElementById('app')?.scrollIntoView({ behavior: 'smooth' })
 }
 
-onMounted(() => {
-  menusStore.fetchMenu('writing')
-  menusStore.fetchMenu('sitemap')
-})
 </script>
 
 <style scoped>

@@ -16,6 +16,13 @@
 const themeStore = useThemeStore()
 
 const { data: siteInfo } = await useAsyncData('site-info', () => $fetch('/api/site-info'))
+
+const menusStore = useMenusStore()
+await useAsyncData('menus', () => Promise.all([
+  menusStore.fetchMenu('header'),
+  menusStore.fetchMenu('writing'),
+  menusStore.fetchMenu('sitemap'),
+]))
 useSeoMeta({
   titleTemplate: (title) => title ? `${title} | ${siteInfo.value?.name}` : (siteInfo.value?.name ?? ''),
   ogSiteName: () => siteInfo.value?.name,

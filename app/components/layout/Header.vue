@@ -31,9 +31,6 @@ watch(() => route.fullPath, () => {
   showSearch.value = false
 })
 
-onMounted(() => {
-  menusStore.fetchMenu('header')
-})
 </script>
 
 <style scoped>
