@@ -30,9 +30,15 @@ export function useNewsletter(defaultMessage: string) {
         message.value = 'Error subscribing! Check your e-mail or let Harrison know.'
         buttonText.value = 'Subscribe'
       }
-    } catch {
-      message.value = 'Error subscribing! Check your e-mail or let Harrison know.'
-      buttonText.value = 'Subscribe'
+    } catch (e: unknown) {
+      const code = (e as any)?.data?.code
+      if (code === 200 || code === 202) {
+        message.value = "Thanks! You're almost subscribed! Just check your e-mail for the confirmation link."
+        showInput.value = false
+      } else {
+        message.value = 'Error subscribing! Check your e-mail or let Harrison know.'
+        buttonText.value = 'Subscribe'
+      }
     } finally {
       clearInterval(interval)
       processingRequest.value = false
