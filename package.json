@@ -9,9 +9,12 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "rsync-dev": "rsync -arvz -e 'ssh -p 21212' --delete .output/ $npm_config_deploy_path_dev/.output/",
-    "rsync-prod": "rsync -arvz -e 'ssh -p 21212' --delete .output/ $npm_config_deploy_path_prod/.output/",
+    "rsync-prod-frontend": "rsync -arvz -e 'ssh -p 21212' --delete .output/ $npm_config_deploy_path_prod/.output/",
+    "rsync-prod-wp": "rsync -arvz -e 'ssh -p 21212' --delete includes/ $npm_config_deploy_path_prod_wp/wp-content/themes/hfm-2026-theme/includes/",
+    "rsync-prod": "npm run rsync-prod-frontend && npm run rsync-prod-wp",
     "deploy-dev": "npm run build && npm run rsync-dev",
-    "deploy-prod": "npm run build && npm run rsync-prod"
+    "deploy-prod": "npm run build && npm run rsync-prod",
+    "deploy-prod-wp": "npm run rsync-prod-wp"
   },
   "dependencies": {
     "@nuxtjs/seo": "^3.3.0",

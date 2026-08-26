@@ -435,13 +435,22 @@ function setup() {
     $args = array(
       'taxonomy' => 'wpmf-category',
       'slug' => $request['slug'],
+      'hide_empty' => false,
     );
     $parent_term_query = new \WP_Term_Query($args);
-    
+
+    if (empty($parent_term_query->terms)) {
+      return new \WP_REST_Response(array(
+        'media' => array(),
+        'term' => $currentTerm
+      ));
+    }
+
     $args = array(
       'taxonomy' => 'wpmf-category',
       'parent' => $parent_term_query->terms[0]->term_id,
-      'orderby' => 'term_order'
+      'orderby' => 'term_order',
+      'hide_empty' => false,
     );
     $child_terms_query = new \WP_Term_Query($args);
 
