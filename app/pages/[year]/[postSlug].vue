@@ -50,7 +50,8 @@ useSeoMeta({
 
       <PostAdjacentNav v-if="(post.prev || post.next) && loaded" :post="post" />
 
-      <!-- Photo modal opens as child route -->
+      <!-- Photo modal opens as a nested child route, overlaying this post
+           which stays mounted underneath -->
       <NuxtPage />
     </div>
   </div>

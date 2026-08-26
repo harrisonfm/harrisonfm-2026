@@ -1,31 +1,29 @@
 <template>
   <nav class="nav-menu" v-if="menu">
-    <Transition name="slide-down">
-      <ul class="header-menu-top" v-if="(showMobileMenu && isMobile) || !isMobile">
-        <HeaderMenuItem
-          v-for="item in menu.items"
-          :key="`menu_item_${item.ID}`"
-          :item="item"
-          :isMobile="isMobile"
-          class="header-menu-item"
-        />
-        <li class="header-menu-search">
-          <button
-            class="hidden sm:flex fa-icon"
-            :class="{ 'text-blue-500': showSearch }"
-            @click="emit('toggle-search')"
-            type="button"
-            aria-label="Toggle search"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5" fill="currentColor">
-              <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
-            </svg>
-          </button>
-          <!-- Mobile: inline form in the dropdown menu -->
-          <HeaderSearchForm v-if="isMobile" @toggle-search="emit('toggle-search')" />
-        </li>
-      </ul>
-    </Transition>
+    <ul class="header-menu-top" :class="{ '!flex': showMobileMenu }">
+      <HeaderMenuItem
+        v-for="item in menu.items"
+        :key="`menu_item_${item.ID}`"
+        :item="item"
+        :isMobile="isMobile"
+        class="header-menu-item"
+      />
+      <li class="header-menu-search">
+        <button
+          class="hidden sm:flex fa-icon"
+          :class="{ 'text-blue-500': showSearch }"
+          @click="emit('toggle-search')"
+          type="button"
+          aria-label="Toggle search"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-5" fill="currentColor">
+            <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"/>
+          </svg>
+        </button>
+        <!-- Mobile: inline form in the dropdown menu -->
+        <HeaderSearchForm v-if="isMobile" @toggle-search="emit('toggle-search')" />
+      </li>
+    </ul>
 
     <!-- Mobile hamburger toggle -->
     <button class="header-icon sm:hidden" @click="toggleMobileMenu" type="button" aria-label="Toggle menu">
@@ -108,7 +106,7 @@ onBeforeUnmount(() => {
   @apply flex justify-end items-center w-full uppercase font-bold dark:text-gray-100;
 }
 .header-menu-top {
-  @apply flex flex-col items-end absolute top-full right-0 border-l-2 border-b-2 border-gray-600 z-neg bg-white bg-opacity-95 dark:bg-gray-900 sm:bg-transparent dark:sm:bg-transparent sm:flex-row sm:static sm:border-0 sm:z-0 sm:items-center;
+  @apply hidden sm:flex flex-col items-end absolute top-full right-0 border-l-2 border-b-2 border-gray-600 z-neg bg-white bg-opacity-95 dark:bg-gray-900 sm:bg-transparent dark:sm:bg-transparent sm:flex-row sm:static sm:border-0 sm:z-0 sm:items-center;
 }
 .header-menu-item {
   @apply relative w-full justify-end flex-wrap sm:w-auto sm:justify-center sm:items-center sm:border-solid sm:border-r-16 sm:border-transparent sm:h-16 sm:flex-nowrap;

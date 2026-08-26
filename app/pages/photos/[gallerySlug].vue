@@ -1,15 +1,23 @@
 <script setup lang="ts">
+import { callWithNuxt } from '#app'
+
 const route = useRoute()
 const gallerySlug = route.params.gallerySlug as string
 
 const postsStore = usePostsStore()
 const storiesStore = useStoriesStore()
 
+// Composables like useWpApi() (called inside these store actions) can lose
+// their Nuxt SSR context after multiple sequential awaits in one handler,
+// even when the first awaited call works fine — callWithNuxt re-anchors the
+// app instance for each hop. See https://nuxt.com/docs/4.x/guide/concepts/auto-imports#vue-and-nuxt-composables
+const nuxtApp = useNuxtApp()
+
 // The gallery can come from two places:
 //   1. A genre embedded in the 'photos' WP page (fast — already in page data)
 //   2. Story media fetched separately via /storymedia endpoint
 await useAsyncData(`photos-gallery-${gallerySlug}`, async () => {
-  await postsStore.fetchPage('photos')
+  await callWithNuxt(nuxtApp, () => postsStore.fetchPage('photos'))
 
   // Check if this gallerySlug matches a genre in the page
   const page = postsStore.page
@@ -23,11 +31,12 @@ await useAsyncData(`photos-gallery-${gallerySlug}`, async () => {
       description: genre.description,
       featured: genre.featured,
     })
-    return
+    return true
   }
 
   // Otherwise fetch story media
-  await storiesStore.fetchStoryImages(gallerySlug)
+  await callWithNuxt(nuxtApp, () => storiesStore.fetchStoryImages(gallerySlug))
+  return true
 })
 
 const gallery = computed(() => postsStore.gallery)
@@ -55,6 +64,8 @@ useSeoMeta({
         :basePath="`/photos/${gallerySlug}`"
       />
     </Transition>
+    <!-- Photo modal opens as a nested child route, overlaying this grid
+         which stays mounted underneath -->
     <NuxtPage />
   </div>
 </template>

@@ -41,6 +41,11 @@ defineProps<{
   @apply w-full grid gap-2 lg:gap-4 grid-cols-1 md:grid-cols-2;
 }
 .jiggle-on-hover {
-  @apply transition-transform duration-200 hover:scale-[1.01];
+  @apply transition-transform duration-200;
+}
+@media (hover: hover) {
+  .jiggle-on-hover:hover {
+    @apply scale-[1.01];
+  }
 }
 </style>

@@ -1,6 +1,12 @@
 <script setup lang="ts">
+// Nuxt's default page key interpolates every route param (including idSlug),
+// so swiping between photos was remounting this whole page on every
+// navigation. A static key keeps the component instance stable across
+// swipes — Modal.vue's watch(() => props.idSlug, ...) updates it in place.
+definePageMeta({ key: 'harrigrams' })
+
 const route = useRoute()
-const idSlug = route.params.idSlug as string
+const idSlug = computed(() => route.params.idSlug as string)
 const postsStore = usePostsStore()
 
 // Load all harrigrams if gallery isn't populated yet (direct navigation / SSR)
@@ -9,7 +15,7 @@ if (!postsStore.gallery.loaded) {
 }
 
 const photo = computed(() => {
-  const id = parseInt(idSlug.split('-')[0]!)
+  const id = parseInt(idSlug.value.split('-')[0]!)
   return postsStore.gallery.images.find((p: any) => p.ID === id)
 })
 

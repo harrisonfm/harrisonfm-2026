@@ -28,6 +28,8 @@ const gallery = computed(() => postsStore.gallery)
       basePath="/harrigrams"
       :isHarrigrams="true"
     />
+    <!-- Photo modal opens as a nested child route, overlaying this grid
+         which stays mounted underneath -->
     <NuxtPage />
   </div>
 </template>

@@ -37,6 +37,7 @@ export const usePostsStore = defineStore('posts', {
         const response = await api.getPosts(params)
         this.posts = response.posts
         this.maxPages = response.max_num_pages ?? 0
+        return response
       } catch (e) {
         this.error = e instanceof Error ? e.message : String(e)
         this.pageError = true

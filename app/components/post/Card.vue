@@ -22,6 +22,11 @@ defineProps<{
 
 <style scoped>
 .jiggle-on-hover {
-  @apply transition-transform duration-200 hover:scale-[1.01];
+  @apply transition-transform duration-200;
+}
+@media (hover: hover) {
+  .jiggle-on-hover:hover {
+    @apply scale-[1.01];
+  }
 }
 </style>
