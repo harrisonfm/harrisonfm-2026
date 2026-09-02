@@ -9,5 +9,6 @@ export default defineEventHandler(async (event) => {
     method: method as any,
     params: query,
     body,
+    timeout: 8000,
   })
 })

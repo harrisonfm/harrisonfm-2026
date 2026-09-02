@@ -16,14 +16,16 @@ export const useWpApi = () => {
     : (config.public.wpBase as string);
 
   // small helper to call endpoints (keeps signatures consistent)
-  async function call<T = any>(path: string, opts?: { params?: WPParams; method?: string; body?: unknown; }): Promise<T> {
+  async function call<T = any>(path: string, opts?: { params?: WPParams; method?: string; body?: unknown; timeout?: number; }): Promise<T> {
     const url = `${base}${path}`;
-    const fetchOpts: RequestInit & { params?: WPParams } = {};
-    if (opts?.method) fetchOpts.method = opts.method;
-    if (opts?.body) fetchOpts.body = opts.body as any;
     // use $fetch on the server and client (Nuxt exposes it)
-    // pass params as query string
-    return await $fetch<T>(url, { params: opts?.params, method: opts?.method as any, body: opts?.body as any }) as T;
+    // timeout so a hung WP backend fails this request instead of holding an SSR worker open indefinitely
+    return await $fetch<T>(url, {
+      params: opts?.params,
+      method: opts?.method as any,
+      body: opts?.body as any,
+      timeout: opts?.timeout ?? 8000,
+    }) as T;
   }
 
   // Endpoints — fully typed parameters to avoid TS7006
@@ -50,7 +52,7 @@ export const useWpApi = () => {
     const menusBase = import.meta.server
       ? `${config.wpCmsUrl as string}/wp-json/menus/v1/menus`
       : '/api/wp/menus/v1/menus';
-    return await $fetch<WPMenu>(`${menusBase}/${location}`);
+    return await $fetch<WPMenu>(`${menusBase}/${location}`, { timeout: 8000 });
   }
 
   async function getStories(): Promise<WPStories> {
@@ -83,6 +85,7 @@ export const useWpApi = () => {
     return await $fetch<{ code: number }>('/api/wp/gmt-mailchimp/v1/subscribe', {
       method: 'POST',
       body: { email },
+      timeout: 8000,
     });
   }
 
