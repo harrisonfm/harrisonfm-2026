@@ -27,6 +27,15 @@ export default defineNuxtConfig({
     // Static-ish pages
     '/search/**': { swr: 60 },
     '/:slug': { swr: 3600 },
+    '/wp-admin': {
+      redirect: { to: 'https://cms.harrisonfm.com/wp-admin/', statusCode: 302 },
+    },
+    '/wp-admin/**': {
+      redirect: { to: 'https://cms.harrisonfm.com/wp-admin/**', statusCode: 302 },
+    },
+    '/wp-login.php': {
+      redirect: { to: 'https://cms.harrisonfm.com/wp-login.php', statusCode: 302 },
+    },
   },
   modules: [
     '@pinia/nuxt',

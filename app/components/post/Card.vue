@@ -1,5 +1,5 @@
 <template>
-  <article class="overlay-article jiggle-on-hover">
+  <article class="overlay-article">
     <NuxtLink :to="post.link">
       <img
         v-if="post.featured?.images?.medium_large"
@@ -19,14 +19,3 @@ defineProps<{
   post: Record<string, any>
 }>()
 </script>
-
-<style scoped>
-.jiggle-on-hover {
-  @apply transition-transform duration-200;
-}
-@media (hover: hover) {
-  .jiggle-on-hover:hover {
-    @apply scale-[1.01];
-  }
-}
-</style>
